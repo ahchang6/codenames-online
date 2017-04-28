@@ -1,0 +1,65 @@
+#main-title { 
+	font-family: 'Raleway',sans-serif;
+	font-size: 35px;
+	text-align: center;
+	margin-top: 20%;
+}
+
+#room-join{
+	font-family: 'Raleway',sans-serif;
+	font-size: 20px;
+}
+
+#button-page{
+	margin-top: 25px;
+	left:0px;
+	margin-right:500px;
+	
+}
+
+
+#team-info{
+	position: relative;
+
+	font-family: 'Raleway',sans-serif;
+	font-size: 35px;
+	text-align: center;
+
+}
+
+
+#a-button, #b-button, #c-button, #d-button, #e-button {
+	z-index:100;
+	position: relative;
+	height:100px;
+	text-align: center;
+	background-color:gray;
+	color:white;
+border-top: 3px solid black; background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000), to(transparent)); background-image: -webkit-linear-gradient(#000, transparent); background-image: -moz-linear-gradient(#000, transparent), -moz-linear-gradient(#000, transparent); background-image: -o-linear-gradient(#000, transparent), -o-linear-gradient(#000, transparent); background-image: linear-gradient(#000, transparent), linear-gradient(#000, transparent); -moz-background-size: 3px 100%; background-size: 3px 100%; background-position: 0 0, 100% 0; background-repeat: no-repeat; }
+}
+/* https://css-tricks.com/examples/GradientBorder/  */
+
+
+#overlay {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('images/loading.jpg');
+}
+
+
+#list-of-words{
+	position: absolute;
+	margin-top: 25px;
+	left:0px;
+	margin-left:1400px;
+	margin-right:400px;
+}
+
+#form {
+	position: absolute;
+	width:500px;
+}
+
