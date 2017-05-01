@@ -60,7 +60,7 @@ function changeColor(input, isCodeMaster){
 
 $(document).ready(function() {
 
-    
+
 
 
 	var RedList = new Array();
@@ -81,7 +81,7 @@ $(document).ready(function() {
 
 	// remove all div with class "non-cm"
 	if(request['player']=="cm"){	
-	$(".non-cm").remove();
+		$(".non-cm").remove();
 	}
 
 
@@ -102,7 +102,7 @@ $(document).ready(function() {
 
 	//variable to check if we ever need to update
 	var masterResponse = null;
-	
+
 	$.ajax({
 		url: "http://127.0.0.1:5000/get_master_info/" + request['room_id'],
 		type: "GET",
@@ -123,45 +123,45 @@ $(document).ready(function() {
 
 	//updates the lists of words to the right
 	function updateList(){
-	$.ajax({
-		url: "http://127.0.0.1:5000/get_team_words/" + request['room_id'] + "/Red",
-		type: "GET",
-		success: function(response){
-			for(var i = 0;i<response.length;i++){
-				if($.inArray(response[i],RedList)==-1){				
-				$('<li class="removeable"><a href="#">' + response[i] + '</a></li>').appendTo("#red-list");
-				RedList.push(response[i]);
-				console.log(RedList);
-				
+		$.ajax({
+			url: "http://127.0.0.1:5000/get_team_words/" + request['room_id'] + "/Red",
+			type: "GET",
+			success: function(response){
+				for(var i = 0;i<response.length;i++){
+					if($.inArray(response[i],RedList)==-1){				
+						$('<li class="removeable"><a href="#">' + response[i] + '</a></li>').appendTo("#red-list");
+						RedList.push(response[i]);
+						console.log(RedList);
+
+					}
 				}
-			}
-		},
-		error: function(response,status,xhr){
-			alert(status);
-			alert("fail");
+			},
+			error: function(response,status,xhr){
+				alert(status);
+				alert("fail");
 
-		},
-	});
+			},
+		});
 
-	
-	$.ajax({
-		url: "http://127.0.0.1:5000/get_team_words/" + request['room_id'] + "/Blue",
-		type: "GET",
-		success: function(response){
-			for(var i = 0;i<response.length;i++){			
-				if($.inArray(response[i],BlueList)==-1){		
-				$('<li class="removeable"><a href="#">' + response[i] + '</a></li>').appendTo("#blue-list");
-				BlueList.push(response[i]);
-				console.log(BlueList);
+
+		$.ajax({
+			url: "http://127.0.0.1:5000/get_team_words/" + request['room_id'] + "/Blue",
+			type: "GET",
+			success: function(response){
+				for(var i = 0;i<response.length;i++){			
+					if($.inArray(response[i],BlueList)==-1){		
+						$('<li class="removeable"><a href="#">' + response[i] + '</a></li>').appendTo("#blue-list");
+						BlueList.push(response[i]);
+						console.log(BlueList);
+					}
 				}
-			}
-		},
-		error: function(response,status,xhr){
-			alert(status);
-			alert("fail");
+			},
+			error: function(response,status,xhr){
+				alert(status);
+				alert("fail");
 
-		},
-	});
+			},
+		});
 
 
 
@@ -186,21 +186,21 @@ $(document).ready(function() {
 				}
 			}
 		});
-		
+
 		$.ajax({
 			url: "http://127.0.0.1:5000/get_info/" + request['room_id'],
 			type: 'GET',
 			success: function(response){
 				//checks if we need to update by comparing if they are the same
-					$('#team-turn').text(response[0]);
-					$('#current-word').text(response[1]);
-					$('#current-value').text(response[2]);
+				$('#team-turn').text(response[0]);
+				$('#current-word').text(response[1]);
+				$('#current-value').text(response[2]);
 
 				setTimeout(updatePage,5000);
 			}
 		});
 
-		
+
 	}
 
 
@@ -208,8 +208,8 @@ $(document).ready(function() {
 	//calls live update function
 	updatePage();
 
-	
-	
+
+
 
 
 
@@ -264,13 +264,13 @@ $(document).ready(function() {
 			},
 		});
 
-		
+
 
 
 	});
 	//passes turn when pressed if belongs to the current turn's team
 	$("#pass-turn").click(function(event){
-	$.ajax({
+		$.ajax({
 			url: "http://127.0.0.1:5000/pass_turn/" + request['room_id'] + "/" + request['player'],
 			type: "POST",
 			success: function(response){
@@ -287,7 +287,7 @@ $(document).ready(function() {
 
 	});
 
-	
+
 	//places the word submittion for code master
 
 	$('#team-placement').text(request['player']);
@@ -325,7 +325,7 @@ function buttonClick(){
 		},
 	});
 	return false;
-	
-		
+
+
 }
 
