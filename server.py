@@ -76,6 +76,10 @@ def print_game(room_id):
 
 @app.route('/upload_create', methods=['GET','POST'])
 def upload_create():
+    """
+    Creates a new session with uploaded words
+    :return: the room_id that is created
+    """
     words =  request.args.get('words')
     # make sure we don't have doubles
     word_list = []
@@ -136,6 +140,12 @@ def pass_turn(room_id, color):
 
 @app.route('/get_team_words/<string:room_id>/<string:color>', methods=['GET'])
 def get_team_words(room_id, color):
+    """
+    returns the list of words submitted by the codemasters
+    :param room_id: the room_id that you want the list of words for
+    :param color: the color of the list of words you want
+    :returns: the json of the list of words for the color
+    """
     if room_id in sessions:
         game = sessions[room_id]
         if color == "Red":
@@ -147,10 +157,16 @@ def get_team_words(room_id, color):
 
 @app.route('/submit_word/<string:room_id>/<string:word>/<int:value>', methods=['POST'])
 def submit_word(room_id, word, value):
+    """
+    submits the the word for the code master
+    :param room_id: the room_id that you want to submit the word for
+    :param word: the word submitted
+    :param value: the number of words assosciated with the clue
+    :returns: status code
+    """
     if room_id in sessions:
         game = sessions[room_id]
-        game.add_word(word, value, game.get_turn())
-        return "success"
+        return game.add_word(word, value, game.get_turn())
     return "No room found"
 
 
