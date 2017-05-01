@@ -1,6 +1,7 @@
-from flask import Flask, jsonify,json
+from flask import Flask, jsonify,json, request
 from game import Game
 from game import Team
+import logging
 import sys
 from flask_cors import CORS, cross_origin
 
@@ -11,6 +12,7 @@ running = True
 
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/get_info/<string:room_id>', methods=['GET'])
 def get_info(room_id):
@@ -72,18 +74,64 @@ def print_game(room_id):
     return "Incorrect Format or doesn't exist"
 
 
+@app.route('/upload_create', methods=['GET','POST'])
+def upload_create():
+    words =  request.args.get('words')
+    # make sure we don't have doubles
+    word_list = []
+    for word in words.splitlines():
+        if word not in word_list:
+            word_list.append(word)
+
+    new_room = Game(0, word_list)
+    while new_room.room in sessions:
+        new_room = Game(0, word_list)
+    sessions[new_room.get_room()] = new_room
+    return new_room.get_room()
+
 @app.route('/create_room/', methods=['POST'])
 def create_room():
     """
     Creates a new session
     :return: the room_id that is created
     """
-    print "hello"
     new_room = Game()
     while new_room.room in sessions:
         new_room = Game()
     sessions[new_room.get_room()] = new_room
     return new_room.get_room()
+
+
+@app.route('/check_room/<string:room_id>', methods=['GET'])
+def check_room(room_id):
+    """
+    Checks if the room_id exists
+    :param room_id: the room_id to be checked
+    :return: "True" if exists, "False" if not
+    """
+    if room_id in sessions:
+        return "True"
+    return "False"
+
+
+@app.route('/pass_turn/<string:room_id>/<string:color>', methods=['POST'])
+def pass_turn(room_id, color):
+    """
+    Passed the turn for the current color
+    :param room_id:
+    :param color:
+    :return:
+    """
+    if room_id in sessions:
+        game = sessions[room_id]
+        if color == "Red" and game.get_turn() == Team.RED:
+            game.end_turn()
+            return "Turn Passed"
+        elif color == "Blue" and game.get_turn() == Team.BLUE:
+            game.end_turn()
+            return "Turn Passed"
+        return "Not your turn"
+    return "No Response"
 
 
 @app.route('/get_team_words/<string:room_id>/<string:color>', methods=['GET'])

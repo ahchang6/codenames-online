@@ -12,7 +12,7 @@ class Team(enum.IntEnum):
 
 class Card:
     @staticmethod
-    def words_select():
+    def words_select(custom_word_list = []):
         """
         Parses the wordlist.txt and stores it in core
         :return:
@@ -22,19 +22,28 @@ class Card:
 
         words = lines
 
+        while len(result)<25 and len(custom_word_list)>0:
+            word_inter = random.choice(custom_word_list)
+            if word_inter == "":
+                continue
+            result.append(word_inter)
+            custom_word_list.remove(word_inter)
+
         while len(result)<25:
             word_inter = random.choice(words)
-            result.append(word_inter[:-1])
+            if word_inter[:-1] not in result:
+                result.append(word_inter[:-1])
             words.remove(word_inter)
+        random.shuffle(result)
 
         return result
 
-    def __init__(self):
+    def __init__(self, custom_word_list = []):
         """
         Constructor for the card class
         """
         # a list of words
-        self.word_list = Card.words_select()
+        self.word_list = Card.words_select(custom_word_list)
         # process list is the coordinate coupled with the words
         self.process_list = {}
         # a chart that keeps track of what has been revealed

@@ -36,7 +36,7 @@
 	background-color:gray;
 	color:white;
 border-top: 3px solid black; background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000), to(transparent)); background-image: -webkit-linear-gradient(#000, transparent); background-image: -moz-linear-gradient(#000, transparent), -moz-linear-gradient(#000, transparent); background-image: -o-linear-gradient(#000, transparent), -o-linear-gradient(#000, transparent); background-image: linear-gradient(#000, transparent), linear-gradient(#000, transparent); -moz-background-size: 3px 100%; background-size: 3px 100%; background-position: 0 0, 100% 0; background-repeat: no-repeat; }
-}
+
 /* https://css-tricks.com/examples/GradientBorder/  */
 
 
@@ -63,3 +63,11 @@ border-top: 3px solid black; background-image: -webkit-gradient(linear, 0 0, 0 1
 	width:500px;
 }
 
+.access-code {
+	font-size:15px;
+	top-margin: 50px;
+	width: 320px;
+	display: inline-block;
+
+
+}

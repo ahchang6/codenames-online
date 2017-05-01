@@ -7,7 +7,7 @@ import json
 
 
 class Game:
-    def __init__(self, random_seed = 0):
+    def __init__(self, random_seed = 0, custom_word_list = []):
         """
         Initializes the Game class, keeping track of each session
 
@@ -15,7 +15,7 @@ class Game:
         if random_seed != 0:
             random.seed(random_seed)
         # Creates and organizes a set of cards
-        self.cards = Card()
+        self.cards = Card(custom_word_list)
         # a chart that keeps track of what has been revealed
         self.reveal_chart = {}
         x = 0
@@ -168,14 +168,16 @@ class Game:
         """
         if not self.waiting_for_word:
             return 1
-        if color == Team.BLUE:
+        if color == Team.BLUE and word not in self.blue_words:
             self.blue_words[word] = value
-        elif color == Team.RED:
+        elif color == Team.RED and word not in self.red_words:
             self.red_words[word] = value
+        else:
+            return "You cannot use that word"
         self.waiting_for_word = False
         self.current_word = word
         self.word_value = value
-        return 0
+        return "Word chosen:" + word
 
     def get_current_word(self):
         return self.current_word

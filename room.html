@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" class="__meteor-css__" href="/659c1cb6eb29a8d6e1cf26fd9f648bf69ccb373c.css?meteor_css_resource=true">
-
-		<script type="text/javascript" src="/53e91069f5c41f5029c0eda8c484f59551c6db4a.js"></script>
-
 
 		<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -22,48 +18,16 @@
 		<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&subset=latin,vietnamese,latin-ext' rel='stylesheet' type='text/css'>
 		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="css/normalize.css" type="text/css">
-		<link rel="stylesheet" href="css/skeleton.css" type="text/css">
-		<link rel="stylesheet" href="css/styles.css" type="text/css">
-		<link rel="stylesheet" type="text/css" href="index.css">
+
+		
 	</head>
 	<body>
 
 
-		<script>
-$(document).ready(function() {
-	var request = {};
-	// http://stackoverflow.com/questions/4209052/how-to-read-get-request-using-javascript
-	var pairs = location.search.substring(1).split('&');
-	for (var i = 0; i < pairs.length; i++) {
-		var pair = pairs[i].split('=');
-		request[pair[0]] = pair[1];
-	}
-
-
-
-	$("#codemaster-button").click(function(){
-
-		$('#codemaster-button').attr('href','panel.html?room_id=' + request['room_id'] + '&player=cm' )
-
-	});
-
-	$("#blue-team-button").click(function(){
-
-		$('#blue-team-button').attr('href','panel.html?room_id=' + request['room_id'] + '&player=Blue' )
-
-	});
-
-	$("#red-team-button").click(function(){
-
-		$('#red-team-button').attr('href','panel.html?room_id=' + request['room_id'] + '&player=Red' )
-
-	});
-
-
-});
-		</script>
-
+		<script src="js/room.js"></script>
+<link rel="stylesheet" type="text/css" href="index.css">
+		<script src="js/panel.js"></script>
+		
 
 
 

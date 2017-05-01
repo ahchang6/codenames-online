@@ -14,7 +14,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
 
-		<script src="/js/index.js"></script>
+		<script src="js/index.js"></script>
 
 		<meta charset="utf-8">
 		<title>Codenames</title>
@@ -29,9 +29,28 @@
 		<link rel="stylesheet" type="text/css" href="index.css">
 	</head>
 	<body>
+		<!--
+		<input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
+		<script src="js/vendor/jquery.ui.widget.js"></script>
+		<script src="js/jquery.iframe-transport.js"></script>
+		<script src="js/jquery.fileupload.js"></script>
+		-->
 		<div id='main-title'>
 			Welcome to Codenames Online<br><br>
+			<form class="access-code">
+				<label style="font-size:20px"> Access Code &#58; </label>
+				<input type="text" id="join-room" name="access-code" value="">	
+			</form>
+			<br><br>
+
 			<a href="#" id="button-title" class="ui-btn ui-btn-inline ui-btn w" style = "font-family: 'Open-sans'";>Create Room</a>
+
+			<a href="#" id="button-join" class="ui-btn ui-btn-inline ui-btn w" style = "font-family: 'Open-sans'";>Join Room</a>
+			<br>
+			<span href="#" class="ui-btn ui-btn-inline ui-btn w" style = "font-family: 'Open-sans'";>
+				<span>Create Custom</span>
+				<input name="file" type="file" id="fileinput">
+			</span>
 		</div>
 
 	</body>

@@ -1,327 +1,45 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
-
-
+		
+		<!--
 
 		<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-		<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
+		-->
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
 		<meta charset="utf-8">
 		<title>Codenames</title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!--
 		<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&subset=latin,vietnamese,latin-ext' rel='stylesheet' type='text/css'>
 		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="index.css">
-	</head>
+		-->
+			</head>
 	<body id="panel-body">
-
-		<script>
-
-var cssDebug = false;
-
-//returns the color opposite of input
-function oppositeColor(color){
-	if(color == "Red"){
-		return "Blue";
-	}
-	else if(color == "Blue"){
-		return "Red";
-	}
-	return "Neutral";
-}
-
-//Function to change all the box on page to correspond to the words received from server
-function changeWords(input){
-	for(var x = 0; x<5;x++){
-		for(var y = 0; y<5; y++){
-			var index = 5*x+y+1;
-			$("#click"+parseInt(index)+ " div").text(input[index-1]);
-
-		}
-
-
-	}
-
-}
-
-//Function to change all the box to the correct revealed color
-function changeColor(input, isCodeMaster){
-	for(var x = 0; x<5;x++){
-		for(var y = 0; y<5; y++){
-			var index = 5*x+y+1;
-			var indexInString = "(" + x.toString() + ", " + y.toString() + ")";
-			var valueOfPosition = input[indexInString];
-			var colorString = "NONE";
-			if (valueOfPosition.indexOf("False") >= 0 && !isCodeMaster){
-				continue;
-			}
-			if (valueOfPosition.indexOf("BLUE") >= 0){
-				colorString = "Blue";
-			}
-			else if (valueOfPosition.indexOf("RED") >= 0){
-				colorString = "Red";
-			}
-			else if (valueOfPosition.indexOf("NEUTRAL") >= 0){
-				colorString = "Yellow";
-			}
-			if(!(colorString === "NONE")){
-				$("#click"+parseInt(index)+ " div").css("background-color",colorString);
-			}
-		}
-
-	}
-
-}
-
-$(document).ready(function() {
-	
-	if(cssDebug){
-		return 0;
-
-	}
-	var request = {};
-	// http://stackoverflow.com/questions/4209052/how-to-read-get-request-using-javascript
-	var pairs = location.search.substring(1).split('&');
-	for (var i = 0; i < pairs.length; i++) {
-		var pair = pairs[i].split('=');
-		request[pair[0]] = pair[1];
-	}
-
-	// requests and changes words
-	$.ajax({
-		url: "http://127.0.0.1:5000/get_words/" + request['room_id'],
-		type: "GET",
-		success: function(response){
-			changeWords(response);
-		},
-		error: function(response,status,xhr){
-			alert(status);
-			alert("fail");
-
-		},
-	});
-
-	//variable to check if we ever need to update
-	var masterResponse = null;
-	
-	$.ajax({
-		url: "http://127.0.0.1:5000/get_master_info/" + request['room_id'],
-		type: "GET",
-		success: function(response){
-			masterResponse = response
-				// checks to see if the player is Codemaster, revealing everything if it is
-				var isCodeMaster = request['player'] === 'cm';
-			changeColor(response, isCodeMaster);
-			$('#overlay').remove();
-		},
-		error: function(response,status,xhr){
-			alert(status);
-			alert("fail");
-
-		},
-	});
-
-
-
-	function updateList(){
-	$('.removeable').remove();
-	$.ajax({
-		url: "http://127.0.0.1:5000/get_team_words/" + request['room_id'] + "/Red",
-		type: "GET",
-		success: function(response){
-			for(var i = 0;i<response.length;i++){
-			$('<li class="removeable"><a href="#">' + response[i] + '</a></li>').appendTo("#red-list");
-			}
-		},
-		error: function(response,status,xhr){
-			alert(status);
-			alert("fail");
-
-		},
-	});
-
-	
-	$.ajax({
-		url: "http://127.0.0.1:5000/get_team_words/" + request['room_id'] + "/Blue",
-		type: "GET",
-		success: function(response){
-			for(var i = 0;i<response.length;i++){
-			$('<li class="removeable"><a href="#">' + response[i] + '</a></li>').appendTo("#blue-list");
-			}
-		},
-		error: function(response,status,xhr){
-			alert(status);
-			alert("fail");
-
-		},
-	});
-
-
-
-	}
-
-
-
-	//live update function
-	function updatePage(){
-		$.ajax({
-			url: "http://127.0.0.1:5000/get_master_info/" + request['room_id'],
-			type: 'GET',
-			success: function(response){
-				updateList();
-				//checks if we need to update by comparing if they are the same
-				if(response == masterResponse){
-				}
-				else{
-					changeColor(response,false);
-					masterResponse=response;
-
-				}
-			}
-		});
 		
-		$.ajax({
-			url: "http://127.0.0.1:5000/get_info/" + request['room_id'],
-			type: 'GET',
-			success: function(response){
-				//checks if we need to update by comparing if they are the same
-					$('#team-turn').text(response[0]);
-					$('#current-word').text(response[1]);
-					$('#current-value').text(response[2]);
-
-				setTimeout(updatePage,5000);
-			}
-		});
-
 		
-	}
-
-
-
-	//calls live update function
-	updatePage();
-
-	
-	
-
-
-
-
-
-
-	//The buttons change color (or doesn't) depending on the status of the game
-	$("[id*=click]").click(function(){
-
-		var parsedInt = parseInt($(this).attr("id").substring(5));
-
-		console.log(parsedInt);
-		var y = (parsedInt - 1) % 5;
-		var x = (parsedInt - y - 1) / 5;
-		console.log(x);
-		console.log(y);
-		var item = this;
-		$.ajax({
-			url: "http://127.0.0.1:5000/play_move/" + request['room_id'] + "/" + request['player'] + "/" + x.toString() + "/" + y.toString(),
-			type: "POST",
-			success: function(response){
-				if(response == "Go Again"){
-					console.log("first");
-					console.log($(item).attr('id'));
-					$(item).find("div").css("background-color",request['player']);
-				}
-				else if(response == "Hit Neutral"){
-					console.log("second");
-					console.log($(item).attr('id'));
-					$(item).find("div").css("background-color","Yellow");
-					$('#team-turn').text(oppositeColor($('#team-turn').text()));
-				}
-				else if(response == "Switch Turn"){
-					console.log("third");
-					console.log($(item).attr('id'));
-					$(item).find("div").css("background-color",oppositeColor(request['player']));
-					$('#team-turn').text(oppositeColor($('#team-turn').text()));
-				}
-				else if(response == "ASSASSIN"){
-					console.log("fourth");
-					console.log($(item).attr('id'));
-					$(item).find("div").css("background-color","Black");
-				}
-				else{
-				}
-				$('#overlay').remove();
-			},
-			error: function(response,status,xhr){
-				alert(status);
-				alert("fail");
-
-			},
-		});
-
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script> 
 		
 
+		<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 
-	});/*
-$("#submit-word").click(function(event){
-	event.preventDefault();
-	var word = $('#word').text();
-	var guessNum = $('#number').text();
-	alert(word);
-	alert(guessNum);
+
+
+
+		<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&subset=latin,vietnamese,latin-ext' rel='stylesheet' type='text/css'>
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 		
 
-
-	});
-	*/
-
-	
-
-
-	$('#team-placement').text(request['player']);
-	if(request['player'] == 'cm'){
-		$('#button-page').prepend('<form id="myform"><input type="text" size="30" value="Word Clue" id="word"><input type="text" size="10" value="Guess Number" id="number"><button onclick="return buttonClick();">Submit</button></form>');
-	}
-
-
-
-
-});
-function buttonClick(){
-	var request = {};
-	// http://stackoverflow.com/questions/4209052/how-to-read-get-request-using-javascript
-	var pairs = location.search.substring(1).split('&');
-	for (var i = 0; i < pairs.length; i++) {
-		var pair = pairs[i].split('=');
-		request[pair[0]] = pair[1];
-	}
-
-	var word = $('#word').val();
-	var guessNum = $('#number').val();
-	$.ajax({
-		url: "http://127.0.0.1:5000/submit_word/" + request['room_id'] +"/" + word + "/" + guessNum,
-		type: "POST",
-		success: function(response){
-			alert("hello");
-		},
-		error: function(response,status,xhr){
-			alert(status);
-			alert("fail");
-
-		},
-	});
-	return false;
-	
-		
-}
-
-
-		</script>
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<script src="js/panel.js"></script>
 	
 
 		<div id='team-info'>
@@ -336,7 +54,7 @@ function buttonClick(){
 		<div id='team-info'>
 			Current Word: <span id='current-word'>Red</span>: <span id='current-value'>0</span>
 		</div>
-
+		<button class='non-cm' id='pass-turn'> Pass Turn </button>
 
 		<div id = 'button-page' class="ui-grid-d">
 
@@ -378,22 +96,18 @@ function buttonClick(){
 		</div>
 
 
-
-		<div id='overlay'> loading, please wait... </div>
+		<div id="overlay"> loading, please wait... </div>
 
 
 <div data-role="page" id="list-of-words">
   <div data-role="main" class="ui-content">
     <h2>Red Team Word History:</h2>
     <ul data-role="listview" id="red-list">
-      <li class="removeable"><a href="#">List Item</a></li>
-      <li class="removeable"><a href="#">Word</a></li>
     </ul>
   </div>
 <div data-role="main" class="ui-content">
     <h2>Blue Team Word History:</h2>
     <ul data-role="listview" id="blue-list">
-      <li class="removeable"><a href="#">List Item</a></li>
     </ul>
   </div>
 </div> 
@@ -401,10 +115,7 @@ function buttonClick(){
 
 
 
-
-
-
-
 	</body>
+
 
 </html>
